@@ -94,12 +94,15 @@ def handle_file_upload(message):
                     if "success" in result or "incorrect." in result:
                         print(Fore.GREEN + f"{ccx} {result}")
                         ok += 1
+                        bot.reply_to(message,f"<code>{ccx}</code>\n {result}")
                     elif "declined." in result or "No such PaymentMethod: 'None'" in result:
                         print(Fore.RED + f"{ccx} declined")
                         bad += 1
                     else:
                         print(Fore.GREEN + f"{ccx}{result}")
                         ok += 1
+                        bot.reply_to(message,f"<code>{ccx}</code>\n {result}")
+                        
 
                     # Append results to the file and flush for real-time updates
                     f.write(f"{ccx}\n{result}\n\n")
