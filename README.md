@@ -1,1 +1,2 @@
 # stripeauth
+pip install telebot

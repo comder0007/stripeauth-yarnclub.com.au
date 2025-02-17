@@ -1,0 +1,2 @@
+4154641890100123|03|2031|607{"result":"failure","messages":"\n<ul class=\"woocommerce-error\" role=\"alert\">\n\t\t\t<li>\n\t\t\tThe card number is incorrect.\t\t<\/li>\n\t<\/ul>\n","refresh":false,"reload":false}
+
